@@ -1,0 +1,27 @@
+.header-container {
+    padding: 1rem;
+}
+.header-title {
+    font-size: 2rem;
+    font-weight: bold;
+
+}
+
+.header-subtitle{
+    font-size: 1.1rem;
+    padding: 1rem;
+}
+.header-list {
+    padding: 0 2rem;
+    list-style:disc;
+    line-height: 2rem;
+}
+.header-show-function{
+    font-weight: bold;
+    color: darkorange;
+}
+.navbar-container {
+    display: flex;
+    flex-direction: row;
+justify-content: space-between;
+}
