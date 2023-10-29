@@ -9,6 +9,7 @@ import { updateCell } from "../redux/CellsSlice";
 import { useTypedSelector } from "../hooks/use-typed-selector";
 import { useCumulativeCode } from "../hooks/use-cumulative-code";
 import { createBundle } from "../redux/BundlerSlice";
+import useDebounce from "../hooks/useDebounce";
 
 interface CodeCellProps {
   cell: {
@@ -29,7 +30,7 @@ const CodeCell = ({ cell }) => {
     }
 
     const timer = setTimeout(async () => {
-      dispatch(createBundle({cellId:cell.id, cumulativeCode}));
+      dispatch(createBundle({ cellId: cell.id, cumulativeCode }));
     }, 750);
 
     return () => {
@@ -37,6 +38,17 @@ const CodeCell = ({ cell }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cumulativeCode, cell.id, createBundle]);
+
+  // function debounce(cb, delay = 1000) {
+  //   let timeout;
+  //   return (args) => {
+  //     console.log("debouncer")
+  //     clearTimeout(timeout);
+  //     timeout = setTimeout(async() => {
+  //       cb(args);
+  //     }, delay);
+  //   };
+  // }
 
   return (
     <Resizable direction="vertical">
@@ -50,7 +62,7 @@ const CodeCell = ({ cell }) => {
         <Resizable direction="horizontal">
           <CodeEditor
             initialValue={cell.cellData.content}
-            onChange={(value) => dispatch(updateCell({ id: cell.id, value }))}
+            onChange={useDebounce((value) => dispatch(updateCell({ id: cell.id, value })),2000)}
           />
         </Resizable>
         <div className="progress-wrapper">

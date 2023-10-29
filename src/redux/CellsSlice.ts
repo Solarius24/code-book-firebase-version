@@ -64,6 +64,7 @@ export const deleteAllCells = createAsyncThunk(
 export const updateCell = createAsyncThunk(
   "cells/updateCell",
   async ({ id, value }) => {
+    console.log("state update")
     const cells = await getDocs(collection(db, "codeBook"));
     for (let snap of cells.docs) {
       if (snap.id === id) {
@@ -71,7 +72,6 @@ export const updateCell = createAsyncThunk(
         await updateDoc(cellRef, {content:value});
       }
     }
-    console.log({id,value})
     return { id:id, value:value };
   }
 );
@@ -117,7 +117,6 @@ const cellsSlice = createSlice({
       .addCase(updateCell.fulfilled, (state, action) => {
         const { id, value } = action.payload;
         const cellIndex = state.cellsArray.findIndex((cell) => cell.id === id);
-        console.log(cellIndex)
         if (cellIndex !== -1) {
           state.cellsArray[cellIndex].cellData.content = value;
         }
