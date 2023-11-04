@@ -31,7 +31,6 @@ const CodeEditor = ({ onChange, initialValue }: CodeEditorProps) => {
         defaultLanguage="javascript"
         defaultValue={initialValue}
         onChange={onChange}
-        // onChange={delay}
       ></Editor>
     </div>
   );

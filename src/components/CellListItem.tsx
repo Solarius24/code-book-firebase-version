@@ -2,6 +2,7 @@
 import './CellListItem.css';
 import CodeCell from './CodeCell';
 import ActionBar from './ActionBar';
+import TextEditor from './TextEditor';
 
 // interface CellListItemProps {
 //   cell: Cell;
@@ -9,7 +10,7 @@ import ActionBar from './ActionBar';
 
 const CellListItem = ({ cell }) => {
   let child: JSX.Element;
-  if (cell.cellData.type === 'code') {
+  if (cell.type === 'code') {
     child = (
       <>
         <div className="action-bar-wrapper">
@@ -21,7 +22,7 @@ const CellListItem = ({ cell }) => {
   } else {
     child = (
       <>
-   
+          <TextEditor cell={cell} />
         <ActionBar id={cell.id} />
       </>
     );

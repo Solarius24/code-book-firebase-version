@@ -27,13 +27,13 @@ export const useCumulativeCode = (cellId: string) => {
     const showFuncNoop = 'var show = () => {}';
     const cumulativeCode = [];
     for (let c of cellsArray) {
-      if (c.cellData.type === 'code') {
+      if (c.type === 'code') {
         if (c.id === cellId) {
           cumulativeCode.push(showFunc);
         } else {
           cumulativeCode.push(showFuncNoop);
         }
-        cumulativeCode.push(c.cellData.content);
+        cumulativeCode.push(c.content);
       }
       if (c.id === cellId) {
         break;

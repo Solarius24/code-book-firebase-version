@@ -10,6 +10,7 @@ import { useTypedSelector } from "../hooks/use-typed-selector";
 import { useCumulativeCode } from "../hooks/use-cumulative-code";
 import { createBundle } from "../redux/BundlerSlice";
 import useDebounce from "../hooks/useDebounce";
+import { updateCellToSessionStorage } from "../redux/CellsSlice";
 
 interface CodeCellProps {
   cell: {
@@ -23,6 +24,7 @@ const CodeCell = ({ cell }) => {
   const dispatch = useDispatch();
   const bundle = useTypedSelector((state) => state.bundler[cell.id]);
   const cumulativeCode = useCumulativeCode(cell.id);
+  const { debaunce } = useDebounce();
   useEffect(() => {
     if (!bundle) {
       dispatch(createBundle({ cellId: cell.id, cumulativeCode }));
@@ -39,17 +41,6 @@ const CodeCell = ({ cell }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cumulativeCode, cell.id, createBundle]);
 
-  // function debounce(cb, delay = 1000) {
-  //   let timeout;
-  //   return (args) => {
-  //     console.log("debouncer")
-  //     clearTimeout(timeout);
-  //     timeout = setTimeout(async() => {
-  //       cb(args);
-  //     }, delay);
-  //   };
-  // }
-
   return (
     <Resizable direction="vertical">
       <div
@@ -61,8 +52,14 @@ const CodeCell = ({ cell }) => {
       >
         <Resizable direction="horizontal">
           <CodeEditor
-            initialValue={cell.cellData.content}
-            onChange={useDebounce((value) => dispatch(updateCell({ id: cell.id, value })),2000)}
+            initialValue={cell.content}
+            // onChange={debaunce(
+            //   (value) => dispatch(updateCell({ id: cell.id, value })),
+            //   2000
+            // )}
+            onChange={(value) =>
+              dispatch(updateCellToSessionStorage({ id: cell.id, value }))
+            }
           />
         </Resizable>
         <div className="progress-wrapper">

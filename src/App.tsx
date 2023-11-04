@@ -1,4 +1,4 @@
-import "bulmaswatch/superhero/bulmaswatch.min.css";
+import "bulmaswatch/solar/bulmaswatch.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import CellList from "./components/CellList";
 import Header from "./components/Header";
@@ -8,6 +8,8 @@ import SignUp from "./pages/SignUp";
 import React  from 'react';
 
 const App = () => {
+
+
   return (
     <BrowserRouter>
       <Routes>

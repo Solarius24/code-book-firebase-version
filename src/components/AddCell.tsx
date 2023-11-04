@@ -3,6 +3,8 @@ import "./AddCell.css";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { addCellToFirestore } from "../redux/CellsSlice";
+import { addCellToSessionStorage } from "../redux/CellsSlice";
+import { nanoid } from "@reduxjs/toolkit";
 
 interface AddCellProps {
   previousCellId: string | null;
@@ -11,18 +13,21 @@ interface AddCellProps {
 
 const AddCell = ({ forceVisible, previousCellId }: AddCellProps) => {
   const dispatch = useDispatch();
+  const id = nanoid()
 
   const handleAddCodeCell = () => {
-    let cellData = { type: "code", content: "" };
-    dispatch(addCellToFirestore(cellData));
+    let cellData = {id:id, type: "code", content: "" };
+    dispatch(addCellToSessionStorage(cellData));
+    // dispatch(addCellToFirestore(cellData));
   };
   const handleAddTextCell = () => {
     let cellData = { type: "text", content: "" };
-    dispatch(addCellToFirestore(cellData));
+    dispatch(addCellToSessionStorage(cellData));
+    // dispatch(addCellToFirestore(cellData));
   };
 
   return (
-    <div className={`add-cell ${forceVisible && 'force-visible'}`}>
+    <div className={`add-cell ${forceVisible && "force-visible"}`}>
       <div className="add-buttons">
         <button
           className="button is-rounded is-primary is-small"
