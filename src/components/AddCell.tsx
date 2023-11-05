@@ -2,9 +2,7 @@
 import "./AddCell.css";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addCellToFirestore } from "../redux/CellsSlice";
 import { addCellToSessionStorage } from "../redux/CellsSlice";
-import { nanoid } from "@reduxjs/toolkit";
 
 interface AddCellProps {
   previousCellId: string | null;
@@ -13,25 +11,15 @@ interface AddCellProps {
 
 const AddCell = ({ forceVisible, previousCellId }: AddCellProps) => {
   const dispatch = useDispatch();
-  const id = nanoid()
-
-  const handleAddCodeCell = () => {
-    let cellData = {id:id, type: "code", content: "" };
-    dispatch(addCellToSessionStorage(cellData));
-    // dispatch(addCellToFirestore(cellData));
-  };
-  const handleAddTextCell = () => {
-    let cellData = { type: "text", content: "" };
-    dispatch(addCellToSessionStorage(cellData));
-    // dispatch(addCellToFirestore(cellData));
-  };
 
   return (
     <div className={`add-cell ${forceVisible && "force-visible"}`}>
       <div className="add-buttons">
         <button
           className="button is-rounded is-primary is-small"
-          onClick={handleAddCodeCell}
+          onClick={() => {
+            dispatch(addCellToSessionStorage({previousCellId, type:"code"}));
+          }}
         >
           <span className="icon is-small">
             <i className="fas fa-plus" />
@@ -40,7 +28,9 @@ const AddCell = ({ forceVisible, previousCellId }: AddCellProps) => {
         </button>
         <button
           className="button is-rounded is-primary is-small"
-          onClick={handleAddTextCell}
+          onClick={() => {
+            dispatch(addCellToSessionStorage({previousCellId, type:"text"}));
+          }}
         >
           <span className="icon is-small">
             <i className="fas fa-plus" />

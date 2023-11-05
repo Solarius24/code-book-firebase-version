@@ -2,7 +2,9 @@
 import { useDispatch } from "react-redux";
 import "./ActionBar.css";
 import React from "react";
-import { deleteCellFromFirestore } from "../redux/CellsSlice";
+import { deleteCellFromSessionStorage, moveCell} from "../redux/CellsSlice";
+
+
 
 interface ActionBarProps {
   id: string;
@@ -11,14 +13,14 @@ interface ActionBarProps {
 const ActionBar = ({ id }: ActionBarProps) => {
   const dispatch = useDispatch();
   const handleDeleteCell = (id) => {
-    dispatch(deleteCellFromFirestore(id));
+    dispatch(deleteCellFromSessionStorage(id));
   };
 
   return (
     <div className="action-bar">
       <button
         className="button is-primary is-small"
-        // onClick={() => moveCell(id, 'up')}
+        onClick={() => {dispatch(moveCell({id, direction:'up'}))}}
       >
         <span className="icon">
           <i className="fas fa-arrow-up"></i>
@@ -26,7 +28,7 @@ const ActionBar = ({ id }: ActionBarProps) => {
       </button>
       <button
         className="button is-primary is-small"
-        // onClick={() => moveCell(id, 'down')}
+        onClick={() => {dispatch(moveCell({id, direction:'down'}))}}
       >
         <span className="icon">
           <i className="fas fa-arrow-down"></i>

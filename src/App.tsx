@@ -6,8 +6,20 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import React  from 'react';
+import {useEffect} from "react"
 
 const App = () => {
+  useEffect(() => {
+    window.onbeforeunload = (event) => {
+      const e = event
+      // Cancel the event
+      e.preventDefault();
+      if (e) {
+        e.returnValue = ""; // Legacy method for cross browser support
+      }
+      return ""; // Legacy method for cross browser support
+    };
+  }, []);
 
 
   return (

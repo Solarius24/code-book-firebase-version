@@ -4,23 +4,22 @@ import { useState, useEffect, useRef } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { Cell } from "../state";
 import { useDispatch } from "react-redux";
-import { updateCell } from "../redux/CellsSlice";
-import useDebounce from "../hooks/useDebounce";
+import { updateCellToSessionStorage,isDataSavedStatus } from "../redux/CellsSlice";
 
 interface TextEditorProps {
   cell: Cell;
 }
 
 const TextEditor = ({ cell }): TextEditorProps => {
-  const [value, setValue] = useState(cell.cellData.content);
+  const [value, setValue] = useState(cell.content);
   const ref = useRef<HTMLDivElement | null>(null);
   const [editing, setEditing] = useState(false);
   const dispatch = useDispatch();
-  const { debaunce } = useDebounce();
 
   function updateHandler(v) {
     setValue(v);
-    debaunce(dispatch(updateCell({ id: cell.id, value: value || "" })), 2000);
+    dispatch(updateCellToSessionStorage({ id: cell.id, value:value || "" }))
+    dispatch(isDataSavedStatus(false))
   }
 
   useEffect(() => {
@@ -47,10 +46,9 @@ const TextEditor = ({ cell }): TextEditorProps => {
       <div className="text-editor" ref={ref}>
         <MDEditor
           value={value}
-          // onChange={(value) =>
-          //   dispatch(updateCell({ id: cell.id, value: value || "" }))
-          // }
-          onChange={updateHandler}
+          onChange={(value) => updateHandler(value)
+          }
+
         />
       </div>
     );
@@ -60,7 +58,7 @@ const TextEditor = ({ cell }): TextEditorProps => {
     <div className="text-editor card" onClick={() => setEditing(true)}>
       <div className="card-content">
         <MDEditor.Markdown
-          source={cell.cellData.content || "CLICK TO OPEN TEXT EDITOR"}
+          source={cell.content || "CLICK TO OPEN TEXT EDITOR"}
         />
       </div>
     </div>

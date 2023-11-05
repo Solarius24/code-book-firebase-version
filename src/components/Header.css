@@ -1,10 +1,4 @@
-.header-container {
-  padding: 1rem;
-}
-.header-title {
-  font-size: 2rem;
-  font-weight: bold;
-}
+
 
 .header-subtitle {
   font-size: 1.1rem;
@@ -19,8 +13,4 @@
   font-weight: bold;
   color: darkorange;
 }
-.navbar-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+

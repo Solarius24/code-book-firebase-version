@@ -5,11 +5,9 @@ import { useEffect } from "react";
 import CodeEditor from "./CodeEditor";
 import Preview from "./Preview";
 import Resizable from "./resizable";
-import { updateCell } from "../redux/CellsSlice";
 import { useTypedSelector } from "../hooks/use-typed-selector";
 import { useCumulativeCode } from "../hooks/use-cumulative-code";
 import { createBundle } from "../redux/BundlerSlice";
-import useDebounce from "../hooks/useDebounce";
 import { updateCellToSessionStorage } from "../redux/CellsSlice";
 
 interface CodeCellProps {
@@ -24,7 +22,6 @@ const CodeCell = ({ cell }) => {
   const dispatch = useDispatch();
   const bundle = useTypedSelector((state) => state.bundler[cell.id]);
   const cumulativeCode = useCumulativeCode(cell.id);
-  const { debaunce } = useDebounce();
   useEffect(() => {
     if (!bundle) {
       dispatch(createBundle({ cellId: cell.id, cumulativeCode }));
@@ -53,10 +50,6 @@ const CodeCell = ({ cell }) => {
         <Resizable direction="horizontal">
           <CodeEditor
             initialValue={cell.content}
-            // onChange={debaunce(
-            //   (value) => dispatch(updateCell({ id: cell.id, value })),
-            //   2000
-            // )}
             onChange={(value) =>
               dispatch(updateCellToSessionStorage({ id: cell.id, value }))
             }

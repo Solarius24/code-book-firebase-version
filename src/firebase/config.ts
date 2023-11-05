@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore} from "firebase/firestore";
+import { doc, getFirestore} from "firebase/firestore";
 // import { getAuth } from "firebase/auth";
 // import { Timestamp} from '@firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -20,6 +20,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 //init services
 const db = getFirestore(app);
+export const docRef = doc(db, "codeBook", "oZwRgHFwztEbaPt4awo0");
+export const collectionName = "codeBookData"
 // project Auth
 // export const auth = getAuth(app)
 // export const timestamp = Timestamp

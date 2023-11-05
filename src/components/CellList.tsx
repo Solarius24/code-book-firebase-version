@@ -9,20 +9,30 @@ import { fetchCellsFromFirestore } from "../redux/CellsSlice";
 import { fetchCellsFromSessionStorage } from "../redux/CellsSlice";
 
 const CellList = () => {
+  //make this code more clear and simple
   const data = useSelector((state) => state.cells.cellsArray);
-  console.log("CELL LIST DATA",data)
+
+  const cellsDisplayOrder = useSelector((state) => state.cells.orderArray);
+
+  const dataToDisplay = cellsDisplayOrder.map((id) => {
+    return data.filter((item) => item.id === id);
+  });
+  const orderDataToDisplay = [];
+  for (let i = 0; i < dataToDisplay.length; i++) {
+    orderDataToDisplay.push(dataToDisplay[i][0]);
+  }
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (sessionStorage.getItem("codeBookData")) {
-      console.log("session storage")
       dispatch(fetchCellsFromSessionStorage());
     } else {
       dispatch(fetchCellsFromFirestore());
     }
   }, [dispatch]);
 
-  const renderedCells = data.map((cell) => (
+  const renderedCells = orderDataToDisplay.map((cell) => (
     <Fragment key={cell.id}>
       <CellListItem cell={cell} />
       <AddCell previousCellId={cell.id} />
