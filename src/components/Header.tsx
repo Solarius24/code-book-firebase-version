@@ -13,6 +13,7 @@ const Header = () => {
   const { updateDataToFirestore } = useFirestore();
 
   const handleUpdateToFirebase = () => {
+    console.log("data updated to firebase")
     dispatch(isDataSavedStatus(true));
     updateDataToFirestore(docRef, collectionName);
   };

@@ -54,7 +54,6 @@ const cellsSlice = createSlice({
       const foundIndex = state.orderArray.findIndex(
         (id) => id === action.payload.previousCellId
       );
-      console.log(foundIndex);
       if (foundIndex < 0) {
         state.orderArray.unshift(cellData.id);
       } else {
@@ -84,6 +83,7 @@ const cellsSlice = createSlice({
     },
     isDataSavedStatus: (state, action) => {
       state.isDataSaved = action.payload;
+      sessionStorage.setItem("codeBookData", JSON.stringify(state))
     },
     moveCell: (state, action) => {
       const direction = action.payload.direction;
