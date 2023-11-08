@@ -6,7 +6,8 @@ import bundlerReducer from "./BundlerSlice"
 const store = configureStore({
     reducer:{
         cells: cellsReducer,
-        bundler: bundlerReducer
+        bundler: bundlerReducer,
+        auth:authReducer
     }
 });
 
