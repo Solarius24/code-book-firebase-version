@@ -1,16 +1,12 @@
-// @ts-nocheck
-import './CellListItem.css';
-import CodeCell from './CodeCell';
-import ActionBar from './ActionBar';
-import TextEditor from './TextEditor';
+import "./CellListItem.css";
+import CodeCell from "./CodeCell";
+import ActionBar from "./ActionBar";
+import TextEditor from "./TextEditor";
+import { Cell } from "../typescript/cell";
 
-// interface CellListItemProps {
-//   cell: Cell;
-// }
-
-const CellListItem = ({ cell }) => {
+const CellListItem = ({cell}:{ cell:Cell}) => {
   let child: JSX.Element;
-  if (cell.type === 'code') {
+  if (cell.type === "code") {
     child = (
       <>
         <div className="action-bar-wrapper">
@@ -22,7 +18,7 @@ const CellListItem = ({ cell }) => {
   } else {
     child = (
       <>
-          <TextEditor cell={cell} />
+        <TextEditor cell={cell} />
         <ActionBar id={cell.id} />
       </>
     );

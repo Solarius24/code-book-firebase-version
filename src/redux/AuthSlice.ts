@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
+const initialState = {
+  value:""
+};
 
 export const authSlice = createSlice({
   name: "user",
@@ -11,6 +13,8 @@ export const authSlice = createSlice({
     },
   },
 });
+
+
 
 // Action creators are generated for each case reducer function
 export const { saveUser } = authSlice.actions;

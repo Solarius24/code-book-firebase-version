@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { useSignup } from "../hooks/useSignup";
 
 export default function SignUp() {
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const { signup } = useSignup();
 
   const handleSignUp = async (e: any) => {
     e.preventDefault();
-    // await signup(email, password, displayName);
+    await signup(email, password, displayName);
   };
   return (
     <>
@@ -30,7 +31,7 @@ export default function SignUp() {
         style={{ marginTop: "3rem" }}
       >
         {/* change div to alert */}
-        {/* {error && <div>{error}</div>}/ */}
+        {error && <div>{error}</div>}/
         <form onSubmit={handleSignUp}>
           <h2 className="title">Sign Up</h2>
 

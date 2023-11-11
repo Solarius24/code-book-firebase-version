@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import bundle from "../bundler";
 interface BundlerState {
@@ -13,19 +12,23 @@ interface BundlerState {
 
 export const createBundle = createAsyncThunk(
   "bundler/createBundle",
-  async ({cellId,cumulativeCode}) => {
+  async ({
+    cellId,
+    cumulativeCode,
+  }: {
+    cellId: string;
+    cumulativeCode: string;
+  }) => {
     const result = await bundle(cumulativeCode);
-    return {cellId, bundle:result}
+    return { cellId, bundle: result };
   }
 );
 
-// const initialState: BundlerState = {};
+const initialState: BundlerState = {};
 
 const bundlerSlice = createSlice({
   name: "Bundler",
-  initialState: {
-
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(createBundle.fulfilled, (state, action) => {

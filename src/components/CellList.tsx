@@ -1,18 +1,19 @@
-// @ts-nocheck
 import "./CellList.css";
 import { Fragment, useEffect } from "react";
 import CellListItem from "./CellListItem";
 import AddCell from "./AddCell";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import { fetchCellsFromFirestore } from "../redux/CellsSlice";
 import { fetchCellsFromSessionStorage } from "../redux/CellsSlice";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../hooks/useTypedSelectorAndDispatch";
 
 const CellList = () => {
   //make this code more clear and simple
-  const data = useSelector((state) => state.cells.cellsArray);
+  const data = useAppSelector((state) => state.cells.cellsArray);
 
-  const cellsDisplayOrder = useSelector((state) => state.cells.orderArray);
+  const cellsDisplayOrder = useAppSelector((state) => state.cells.orderArray);
 
   const dataToDisplay = cellsDisplayOrder.map((id) => {
     return data.filter((item) => item.id === id);
@@ -22,7 +23,7 @@ const CellList = () => {
     orderDataToDisplay.push(dataToDisplay[i][0]);
   }
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (sessionStorage.getItem("codeBookData")) {

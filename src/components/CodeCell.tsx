@@ -1,26 +1,22 @@
-// @ts-nocheck
 import "./CodeCell.css";
-import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import CodeEditor from "./CodeEditor";
 import Preview from "./Preview";
 import Resizable from "./resizable";
-import { useTypedSelector } from "../hooks/use-typed-selector";
+import { useAppDispatch, useAppSelector } from "../hooks/useTypedSelectorAndDispatch";
 import { useCumulativeCode } from "../hooks/use-cumulative-code";
 import { createBundle } from "../redux/BundlerSlice";
 import { updateCellToSessionStorage } from "../redux/CellsSlice";
+import { RootState } from "../redux/store";
+import { Cell } from "../typescript/cell";
 
-interface CodeCellProps {
-  cell: {
-    id: string;
-    type: string;
-    content: string;
-  };
-}
+// interface CodeCellProps {
+//   cell: Cell;
+// }
 
-const CodeCell = ({ cell }) => {
-  const dispatch = useDispatch();
-  const bundle = useTypedSelector((state) => state.bundler[cell.id]);
+const CodeCell = ({ cell }:{cell:Cell}) => {
+  const dispatch = useAppDispatch();
+  const bundle = useAppSelector((state:RootState) => state.bundler[cell.id]);
   const cumulativeCode = useCumulativeCode(cell.id);
   useEffect(() => {
     if (!bundle) {

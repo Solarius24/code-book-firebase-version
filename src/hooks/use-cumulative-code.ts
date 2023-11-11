@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { useTypedSelector } from './use-typed-selector';
+import { useAppSelector } from "./useTypedSelectorAndDispatch";
 
 export const useCumulativeCode = (cellId: string) => {
-  return useTypedSelector((state) => {
+  return useAppSelector((state) => {
     const {cellsArray} = state.cells;
     // const orderedCells = cellsArray.map((id) =>id.cellData);
     // console.log(orderedCells)

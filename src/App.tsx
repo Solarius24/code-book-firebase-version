@@ -5,13 +5,21 @@ import Header from "./components/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import React  from 'react';
-import {useEffect} from "react"
+import React from "react";
+import { useEffect } from "react";
+import { saveUser } from "./redux/AuthSlice";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/config";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "./hooks/useTypedSelectorAndDispatch";
+import { RootState } from "./redux/store";
 
 const App = () => {
   useEffect(() => {
     window.onbeforeunload = (event) => {
-      const e = event
+      const e = event;
       // Cancel the event
       e.preventDefault();
       if (e) {
@@ -21,6 +29,20 @@ const App = () => {
     };
   }, []);
 
+  //Every time auth changes we will save new user data to our global state.
+  //If there is no user, we just set a user to undefined.
+  const user = useAppSelector((state: RootState) => state.auth.value);
+  console.log("user from state", user);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(saveUser(user.refreshToken));
+      } else {
+        dispatch(saveUser(undefined));
+      }
+    });
+  }, [auth, dispatch]);
 
   return (
     <BrowserRouter>
@@ -34,7 +56,7 @@ const App = () => {
             </div>
           }
         />
-        <Route path="/login" element={<Login/>} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
     </BrowserRouter>

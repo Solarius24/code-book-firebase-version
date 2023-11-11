@@ -15,16 +15,13 @@ const Header = () => {
   const handleUpdateToFirebase = () => {
     console.log("data updated to firebase")
     dispatch(isDataSavedStatus(true));
-
-
     updateDataToFirestore(docRef, collectionName);
   };
 
-  // const handleLogout = (e: any) => {
-  //   e.preventDefault();
-
-  //   navigate("/login");
-  // };
+  const handleLogout = (e: any) => {
+    e.preventDefault();
+    navigate("/login");
+  };
   return (
     <>
       <nav
@@ -46,10 +43,10 @@ const Header = () => {
                   <strong>SAVE</strong>
                 </button>
 
-                <a className="button is-primary">
+                <a onClick={()=>navigate("/signup")} className="button is-primary">
                   <strong>Sign up</strong>
                 </a>
-                <a className="button is-light">Log in</a>
+                <a onClick ={ () => navigate("/login")} className="button is-light">Log in</a>
               </div>
             </div>
           </div>
@@ -97,10 +94,10 @@ const Header = () => {
 };
 
 export default Header;
-// function updateDataToFirestore(docRef: any, collectionName: any) {
-//   throw new Error("Function not implemented.");
-// }
+function updateDataToFirestore(docRef: any, collectionName: any) {
+  throw new Error("Function not implemented.");
+}
 
-// function dispatch(arg0: { payload: any; type: "Cells/isDataSavedStatus" }) {
-//   throw new Error("Function not implemented.");
-// }
+function dispatch(arg0: { payload: any; type: "Cells/isDataSavedStatus" }) {
+  throw new Error("Function not implemented.");
+}

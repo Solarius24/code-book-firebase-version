@@ -1,25 +1,23 @@
-// @ts-nocheck
 import "./TextEditor.css";
 import { useState, useEffect, useRef } from "react";
 import MDEditor from "@uiw/react-md-editor";
-import { Cell } from "../state";
 import { useDispatch } from "react-redux";
-import { updateCellToSessionStorage,isDataSavedStatus } from "../redux/CellsSlice";
+import {
+  updateCellToSessionStorage,
+  isDataSavedStatus,
+} from "../redux/CellsSlice";
+import { Cell } from "../typescript/cell";
 
-interface TextEditorProps {
-  cell: Cell;
-}
-
-const TextEditor = ({ cell }): TextEditorProps => {
+const TextEditor = ({cell}:{cell:Cell}) => {
   const [value, setValue] = useState(cell.content);
   const ref = useRef<HTMLDivElement | null>(null);
   const [editing, setEditing] = useState(false);
   const dispatch = useDispatch();
 
-  function updateHandler(v) {
-    setValue(v);
-    dispatch(updateCellToSessionStorage({ id: cell.id, value:value || "" }))
-    dispatch(isDataSavedStatus(false))
+  function updateHandler(value:any) {
+    setValue(value);
+    dispatch(updateCellToSessionStorage({ id: cell.id, value: value || "" }));
+    dispatch(isDataSavedStatus(false));
   }
 
   useEffect(() => {
@@ -44,12 +42,7 @@ const TextEditor = ({ cell }): TextEditorProps => {
   if (editing) {
     return (
       <div className="text-editor" ref={ref}>
-        <MDEditor
-          value={value}
-          onChange={(value) => updateHandler(value)
-          }
-
-        />
+        <MDEditor value={value} onChange={(value) => updateHandler(value)} />
       </div>
     );
   }

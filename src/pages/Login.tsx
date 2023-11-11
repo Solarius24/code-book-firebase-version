@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {useLogin} from "../hooks/useLogin"
+
 
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const { login, error } = useLogin();
+  const { login, error } = useLogin();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // login(email, password).then(() => navigate("/"));
+    login(email, password).then(() => navigate("/"));
   };
 
   return (
@@ -29,7 +31,7 @@ export default function Login() {
       <div className="field is-grouped is-grouped-centered columns"
       style={{marginTop:"3rem"}}>
         {/* change div to alert */}
-        {/* {error && <div>{error}</div>}/ */}
+        {error && <div>{error}</div>}/
         <form onSubmit={handleSubmit}>
           <h2 className="title">Log in</h2>
           <div className="field" id="email">

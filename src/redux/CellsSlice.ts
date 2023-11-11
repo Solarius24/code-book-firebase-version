@@ -1,8 +1,25 @@
-// @ts-nocheck
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice, nanoid } from "@reduxjs/toolkit";
 import db from "../firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+
+
+
+interface CellsState {
+  cellsArray: {
+    id: string;
+    content: string;
+    type: "code" | "text";
+  }[];
+  isDataSaved: boolean;
+  orderArray: string[];
+}
+
+const initialState: CellsState = {
+  cellsArray: [],
+  isDataSaved: true,
+  orderArray: [],
+};
 
 // fetch cell
 export const fetchCellsFromFirestore = createAsyncThunk(
@@ -15,37 +32,30 @@ export const fetchCellsFromFirestore = createAsyncThunk(
   }
 );
 
-// interface CellsState {
-//   name:string,
-//   initialState:{
-//     cellsArray: {
-//       id: string;
-//       cellData: {
-//         type: "code" | "text";
-//         constent: string;
-//       }[];
-//     };
-//   }
-
-// }
-
 const cellsSlice = createSlice({
   name: "Cells",
-  initialState: {
-    cellsArray: [],
-    isDataSaved: true,
-    orderArray: [],
-  },
+  initialState,
   reducers: {
     fetchCellsFromSessionStorage: (state) => {
-      const dataFromSesionStorage = JSON.parse(
-        sessionStorage.getItem("codeBookData")
-      );
-      const { cellsArray, orderArray } = dataFromSesionStorage;
-      state.cellsArray = cellsArray;
-      state.orderArray = orderArray;
+      let codeBookData = sessionStorage.getItem("codeBookData");
+      if (codeBookData) {
+        const dataFromSesionStorage = JSON.parse(codeBookData);
+        const { cellsArray, orderArray } = dataFromSesionStorage;
+        state.cellsArray = cellsArray;
+        state.orderArray = orderArray;
+      }
+      // const dataFromSesionStorage:CellsState = JSON.parse(
+      //   sessionStorage.getItem("codeBookData")
+      // );
+      // const { cellsArray, orderArray } = dataFromSesionStorage;
+      // state.cellsArray = cellsArray;
+      // state.orderArray = orderArray;
     },
-    addCellToSessionStorage: (state, action) => {
+
+    addCellToSessionStorage: (
+      state,
+      action: PayloadAction<{ type: "code" | "text"; previousCellId: string }>
+    ) => {
       const id = nanoid();
       let cellData = { id: id, type: action.payload.type, content: "" };
       // state.cellsArray[cell.id] = cell;
@@ -83,7 +93,7 @@ const cellsSlice = createSlice({
     },
     isDataSavedStatus: (state, action) => {
       state.isDataSaved = action.payload;
-      sessionStorage.setItem("codeBookData", JSON.stringify(state))
+      sessionStorage.setItem("codeBookData", JSON.stringify(state));
     },
     moveCell: (state, action) => {
       const direction = action.payload.direction;
@@ -119,9 +129,11 @@ const cellsSlice = createSlice({
 
   extraReducers: (builder) => {
     builder.addCase(fetchCellsFromFirestore.fulfilled, (state, action) => {
-      state.cellsArray = action.payload.cellsArray;
-      state.orderArray = action.payload.orderArray;
-      state.isDataSaved = action.payload.isDataSaved;
+      if (action.payload) {
+        state.cellsArray = action.payload.cellsArray;
+        state.orderArray = action.payload.orderArray;
+        state.isDataSaved = action.payload.isDataSaved;
+      }
     });
   },
 });
@@ -131,7 +143,6 @@ export const {
   deleteCellFromSessionStorage,
   fetchCellsFromSessionStorage,
   isDataSavedStatus,
-  insertCellAfter,
   moveCell,
 } = cellsSlice.actions;
 export default cellsSlice.reducer;
