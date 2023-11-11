@@ -1,3 +1,4 @@
+// @ts-ignore
 import "./CellList.css";
 import { Fragment, useEffect } from "react";
 import CellListItem from "./CellListItem";
@@ -12,6 +13,7 @@ import {
 const CellList = () => {
   //make this code more clear and simple
   const data = useAppSelector((state) => state.cells.cellsArray);
+  const userId = useAppSelector((state) => state.auth.userId)
 
   const cellsDisplayOrder = useAppSelector((state) => state.cells.orderArray);
 
@@ -28,8 +30,8 @@ const CellList = () => {
   useEffect(() => {
     if (sessionStorage.getItem("codeBookData")) {
       dispatch(fetchCellsFromSessionStorage());
-    } else {
-      dispatch(fetchCellsFromFirestore());
+    } else if(userId) {
+      dispatch(fetchCellsFromFirestore(userId));
     }
   }, [dispatch]);
 

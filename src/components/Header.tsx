@@ -1,26 +1,32 @@
 // @ts-nocheck
 import { useNavigate } from "react-router";
-import "./Header.css"
+import "./Header.css";
 import { isDataSavedStatus } from "../redux/CellsSlice";
-import { collectionName, docRef } from "../firebase/config";
-import { useDispatch } from "react-redux";
+import { collectionCellData, collectionName,db} from "../firebase/config";
 import useFirestore from "../hooks/useFirestore";
-import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../hooks/useTypedSelectorAndDispatch";
+import { useLogout } from "../hooks/useLogout";
+import { doc } from "firebase/firestore";
+
 const Header = () => {
-  const selector = useSelector((state)=> state.cells.isDataSavedStatus)
+  const selector = useAppSelector((state) => state.cells.isDataSaved);
+  const dispatch = useAppDispatch()
+  const userId = useAppSelector((state) => state.auth.userId);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
   const { updateDataToFirestore } = useFirestore();
+  const { logout } = useLogout();
+  const dispalyName = useAppSelector((state) => state.auth.userDisplayName)
 
   const handleUpdateToFirebase = () => {
-    console.log("data updated to firebase")
     dispatch(isDataSavedStatus(true));
+    const docRef = doc(db, collectionCellData, userId)
     updateDataToFirestore(docRef, collectionName);
+  
   };
 
   const handleLogout = (e: any) => {
-    e.preventDefault();
-    navigate("/login");
+    logout();
+
   };
   return (
     <>
@@ -34,19 +40,54 @@ const Header = () => {
             <h1 className="title has-text-warning">CODEBOOK</h1>
           </div>
         </div>
-
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-end">
+          <div className="navbar-item">
+            <h1 className="title has-text-danger">HELLO {dispalyName}</h1>
+          </div>
             <div className="navbar-item">
               <div className="buttons">
-                <button onClick={handleUpdateToFirebase} className="button is-warning" disabled = {selector ? true : false}>
-                  <strong>SAVE</strong>
-                </button>
+                {userId && (
+                  <button
+                    onClick={handleUpdateToFirebase}
+                    className="button is-warning"
+                    disabled = {selector}
+       
+                  
+                  >
+                    <strong>SAVE</strong>
+                  </button>
+                )}
 
-                <a onClick={()=>navigate("/signup")} className="button is-primary">
-                  <strong>Sign up</strong>
-                </a>
-                <a onClick ={ () => navigate("/login")} className="button is-light">Log in</a>
+                {userId && (
+                  <a
+                    onClick={handleLogout}
+                    className="button is-light"
+                    href=" "
+                  >
+                    Logout
+                  </a>
+                )}
+
+                {!userId && (
+                  <a
+                    onClick={() => navigate("/signup")}
+                    className="button is-primary"
+                    href=" "
+                  >
+                    <strong>Sign up</strong>
+                  </a>
+                )}
+
+                {!userId && (
+                  <a
+                    onClick={() => navigate("/login")}
+                    className="button is-light"
+                    href=" "
+                  >
+                    Log in
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -93,11 +134,12 @@ const Header = () => {
   );
 };
 
-export default Header;
-function updateDataToFirestore(docRef: any, collectionName: any) {
-  throw new Error("Function not implemented.");
-}
+export default Header
+// export default Header;
+// function updateDataToFirestore(docRef: any, collectionName: any) {
+//   throw new Error("Function not implemented.");
+// }
 
-function dispatch(arg0: { payload: any; type: "Cells/isDataSavedStatus" }) {
-  throw new Error("Function not implemented.");
-}
+// function dispatch(arg0: { payload: any; type: "Cells/isDataSavedStatus" }) {
+//   throw new Error("Function not implemented.");
+// }

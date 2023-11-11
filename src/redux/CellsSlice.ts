@@ -1,8 +1,9 @@
+// @ts-ignore
 import { PayloadAction, createSlice, nanoid } from "@reduxjs/toolkit";
 import db from "../firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
+import { collectionCellData} from "../firebase/config";
 
 
 interface CellsState {
@@ -24,10 +25,13 @@ const initialState: CellsState = {
 // fetch cell
 export const fetchCellsFromFirestore = createAsyncThunk(
   "cells/fetchCellsFromFirestore",
-  async () => {
-    const docRef = doc(db, "codeBook", "oZwRgHFwztEbaPt4awo0");
+  async (userId:string) => {
+    console.log("data from firestore")
+    // const docRef = doc(db,collectionCellData,userId)
+    const docRef = doc(db,"codeBook", "Wc5IToceGTgsWV5mmnj3J1wo2Fm1")
     const docSnap = await getDoc(docRef);
     const cells = docSnap.data();
+    console.log(cells)
     return cells;
   }
 );
@@ -39,6 +43,7 @@ const cellsSlice = createSlice({
     fetchCellsFromSessionStorage: (state) => {
       let codeBookData = sessionStorage.getItem("codeBookData");
       if (codeBookData) {
+        console.log("fetch data fro session store")
         const dataFromSesionStorage = JSON.parse(codeBookData);
         const { cellsArray, orderArray } = dataFromSesionStorage;
         state.cellsArray = cellsArray;

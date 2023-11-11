@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSignup } from "../hooks/useSignup";
 
 export default function SignUp() {
@@ -8,10 +8,12 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const { signup } = useSignup();
+  const navigate = useNavigate();
 
   const handleSignUp = async (e: any) => {
     e.preventDefault();
     await signup(email, password, displayName);
+    navigate("/");
   };
   return (
     <>
@@ -31,14 +33,17 @@ export default function SignUp() {
         style={{ marginTop: "3rem" }}
       >
         {/* change div to alert */}
-        {error && <div>{error}</div>}/
-        <form onSubmit={handleSignUp}>
-          <h2 className="title">Sign Up</h2>
+        {error && <div>{error}</div>}
+
+
+        
+        <form onSubmit={handleSignUp} className="field column is-half">
+          <h2 className="title has-text-centered">Sign Up</h2>
 
           <div className="field" id="email">
             <label className="label is-large">Nickname</label>
             <input
-              className="control is-large"
+              className="input is-large"
               type="text"
               value={displayName}
               required
@@ -49,7 +54,7 @@ export default function SignUp() {
           <div className="field" id="email">
             <label className="label is-large">Email</label>
             <input
-              className="control is-large"
+              className="input is-large"
               type="email"
               value={email}
               required
@@ -60,7 +65,7 @@ export default function SignUp() {
           <div className="field" id="password-confirm">
             <label className="label is-large">Password</label>
             <input
-              className="control is-large"
+              className="input is-large"
               type="password"
               value={password}
               required
@@ -69,11 +74,11 @@ export default function SignUp() {
           </div>
 
           <div className="field">
-            <button type="submit" className="button is-link">
+            <button type="submit" className="button is-link is-large">
               Sign Up
             </button>
           </div>
-          <div className="field">
+          <div className="field has-text-centered">
             Already have an account <Link to="/login">Log in</Link>
           </div>
         </form>

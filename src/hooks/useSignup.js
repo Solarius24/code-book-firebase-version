@@ -25,6 +25,9 @@ export const useSignup = () => {
       await setDoc(doc(db, "users", res.user.uid), {
         displayName,
       });
+      await setDoc(doc(db,"codeBook",res.user.uid ),{
+        
+      })
     } catch (err) {
       setError(err.message);
     }

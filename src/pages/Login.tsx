@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {useLogin} from "../hooks/useLogin"
-
+import { useLogin } from "../hooks/useLogin";
+import { useAppDispatch, useAppSelector } from "../hooks/useTypedSelectorAndDispatch";
 
 
 export default function Login() {
@@ -9,10 +9,12 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const { login, error } = useLogin();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+  const userId = useAppSelector((state) => state.auth.userId)
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    login(email, password).then(() => navigate("/"));
+    login(email, password).then(() => navigate("/")).then()
   };
 
   return (
@@ -28,16 +30,19 @@ export default function Login() {
           </div>
         </div>
       </nav>
-      <div className="field is-grouped is-grouped-centered columns"
-      style={{marginTop:"3rem"}}>
+      <div
+        className="field is-grouped is-grouped-centered columns"
+        style={{ marginTop: "3rem" }}
+      >
         {/* change div to alert */}
-        {error && <div>{error}</div>}/
-        <form onSubmit={handleSubmit}>
-          <h2 className="title">Log in</h2>
+        {/* {error && <div>{error}</div>}/ */}
+
+        <form onSubmit={handleSubmit} className="field column is-half">
+          <h2 className="title has-text-centered">Log in</h2>
           <div className="field" id="email">
             <label className="label is-large">Email</label>
             <input
-              className="control is-large"
+              className="input is-large"
               type="email"
               value={email}
               required
@@ -48,7 +53,7 @@ export default function Login() {
           <div className="field" id="password-confirm">
             <label className="label is-large">Password</label>
             <input
-              className="control is-large"
+              className="input is-large"
               type="password"
               value={password}
               required
@@ -57,11 +62,11 @@ export default function Login() {
           </div>
 
           <div className="field">
-            <button type="submit" className="button is-link">
+            <button type="submit" className="button is-link is-large">
               Log in
             </button>
           </div>
-          <div className="field">
+          <div className="field has-text-centered">
             Need an account? <Link to="/signup">Sign Up</Link>
           </div>
         </form>

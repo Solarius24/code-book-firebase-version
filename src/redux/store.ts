@@ -2,13 +2,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cellsReducer from './CellsSlice';
 import bundlerReducer from "./BundlerSlice"
-import AuthReducer from "./AuthSlice"
+import authReducer from "./AuthSlice"
 
 const store = configureStore({
     reducer:{
         cells: cellsReducer,
         bundler: bundlerReducer,
-        auth:AuthReducer,
+        auth:authReducer,
     }
 });
 

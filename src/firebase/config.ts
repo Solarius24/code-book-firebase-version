@@ -2,10 +2,10 @@
 import { initializeApp } from "firebase/app";
 import { doc, getFirestore} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { useAppSelector } from "../hooks/useTypedSelectorAndDispatch";
 // import { Timestamp} from '@firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAqZuZT3wJSt6AvQndU2WzhFUx69FJuiA4",
@@ -15,14 +15,17 @@ const firebaseConfig = {
   messagingSenderId: "874387873952",
   appId: "1:874387873952:web:b4981ce306e6c6988b29c5",
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 //init services
 export const db = getFirestore(app);
-export const docRef = doc(db, "codeBook", "oZwRgHFwztEbaPt4awo0");
-export const collectionName = "codeBookData"
 // project Auth
 export const auth = getAuth(app)
 // export const timestamp = Timestamp
 export default db
+//name of the key in session storage
+export const collectionName = "codeBookData"
+//firestore collection with code cells
+export const  collectionCellData = "codeBook"
+//firestore collection with user displayName
+export const collectionDisplayName = "users"
