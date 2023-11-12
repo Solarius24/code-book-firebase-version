@@ -1,6 +1,5 @@
-// @ts-nocheck
-import './Preview.css';
-import { useRef, useEffect } from 'react';
+import "./Preview.css";
+import { useRef, useEffect } from "react";
 
 interface PreviewProps {
   code: string;
@@ -38,13 +37,13 @@ const html = `
     </html>
   `;
 
-const Preview = ({ code, err }) => {
+const Preview = ({ code, err }: PreviewProps) => {
   const iframe = useRef<any>();
 
   useEffect(() => {
     iframe.current.srcdoc = html;
     setTimeout(() => {
-      iframe.current.contentWindow.postMessage(code, '*');
+      iframe.current.contentWindow.postMessage(code, "*");
     }, 50);
   }, [code]);
 

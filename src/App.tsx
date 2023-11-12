@@ -29,7 +29,6 @@ const App = () => {
         dispatch(saveUser({value:user.refreshToken,userId:user.uid,isLogIn:true}));
         dispatch(fetchDisplayNameFromFirestore(user.uid))
       } else {
-        console.log("undefined")
         dispatch(saveUser(undefined));
       }
     });

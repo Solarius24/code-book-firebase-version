@@ -31,14 +31,24 @@ const bundlerSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(createBundle.fulfilled, (state, action) => {
-      state[action.payload.cellId] = {
-        loading: false,
-        code: action.payload.bundle.code,
-        err: action.payload.bundle.err,
-      };
-      return state;
-    });
+    builder
+      .addCase(createBundle.pending, (state, action) => {
+        state[action.meta.arg.cellId] = {
+          loading: true,
+          code: "",
+          err: "",
+        };
+        return state;
+      })
+
+      .addCase(createBundle.fulfilled, (state, action) => {
+        state[action.payload.cellId] = {
+          loading: false,
+          code: action.payload.bundle.code,
+          err: action.payload.bundle.err,
+        };
+        return state;
+      });
   },
 });
 

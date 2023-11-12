@@ -1,4 +1,3 @@
-// @ts-ignore
 import "./CellList.css";
 import { Fragment, useEffect } from "react";
 import CellListItem from "./CellListItem";
@@ -16,7 +15,6 @@ const CellList = () => {
   const userId = useAppSelector((state) => state.auth.userId)
 
   const cellsDisplayOrder = useAppSelector((state) => state.cells.orderArray);
-
   const dataToDisplay = cellsDisplayOrder.map((id) => {
     return data.filter((item) => item.id === id);
   });
@@ -28,7 +26,7 @@ const CellList = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (sessionStorage.getItem("codeBookData")) {
+    if (sessionStorage.getItem("codeBookData") && userId) {
       dispatch(fetchCellsFromSessionStorage());
     } else if(userId) {
       dispatch(fetchCellsFromFirestore(userId));

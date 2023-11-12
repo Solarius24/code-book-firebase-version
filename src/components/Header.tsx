@@ -1,32 +1,32 @@
-// @ts-nocheck
 import { useNavigate } from "react-router";
 import "./Header.css";
 import { isDataSavedStatus } from "../redux/CellsSlice";
-import { collectionCellData, collectionName,db} from "../firebase/config";
+import { collectionCellData, collectionName, db } from "../firebase/config";
 import useFirestore from "../hooks/useFirestore";
-import { useAppDispatch, useAppSelector } from "../hooks/useTypedSelectorAndDispatch";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../hooks/useTypedSelectorAndDispatch";
 import { useLogout } from "../hooks/useLogout";
 import { doc } from "firebase/firestore";
 
 const Header = () => {
   const selector = useAppSelector((state) => state.cells.isDataSaved);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.auth.userId);
   const navigate = useNavigate();
   const { updateDataToFirestore } = useFirestore();
   const { logout } = useLogout();
-  const dispalyName = useAppSelector((state) => state.auth.userDisplayName)
+  const dispalyName = useAppSelector((state) => state.auth.userDisplayName);
 
   const handleUpdateToFirebase = () => {
     dispatch(isDataSavedStatus(true));
-    const docRef = doc(db, collectionCellData, userId)
+    const docRef = doc(db, collectionCellData, userId);
     updateDataToFirestore(docRef, collectionName);
-  
   };
 
   const handleLogout = (e: any) => {
     logout();
-
   };
   return (
     <>
@@ -42,29 +42,23 @@ const Header = () => {
         </div>
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-end">
-          <div className="navbar-item">
-            <h1 className="title has-text-danger">HELLO {dispalyName}</h1>
-          </div>
+            <div className="navbar-item">
+              <h1 className="title has-text-danger">HELLO {dispalyName}</h1>
+            </div>
             <div className="navbar-item">
               <div className="buttons">
                 {userId && (
                   <button
                     onClick={handleUpdateToFirebase}
                     className="button is-warning"
-                    disabled = {selector}
-       
-                  
+                    disabled={selector}
                   >
                     <strong>SAVE</strong>
                   </button>
                 )}
 
                 {userId && (
-                  <a
-                    onClick={handleLogout}
-                    className="button is-light"
-                    href=" "
-                  >
+                  <a onClick={handleLogout} className="button is-light" href=" ">
                     Logout
                   </a>
                 )}
@@ -73,7 +67,6 @@ const Header = () => {
                   <a
                     onClick={() => navigate("/signup")}
                     className="button is-primary"
-                    href=" "
                   >
                     <strong>Sign up</strong>
                   </a>
@@ -83,7 +76,6 @@ const Header = () => {
                   <a
                     onClick={() => navigate("/login")}
                     className="button is-light"
-                    href=" "
                   >
                     Log in
                   </a>
@@ -125,6 +117,9 @@ const Header = () => {
         <li>
           <h5>Add new cells by hovering on the divider between each cell.</h5>
         </li>
+        <li>
+          <h5>Add changes to the code to refresh the preview window</h5>
+        </li>
       </ul>
       <h4 className="header-subtitle">
         If you will sign in and create your account, all of your changes will be
@@ -134,12 +129,5 @@ const Header = () => {
   );
 };
 
-export default Header
-// export default Header;
-// function updateDataToFirestore(docRef: any, collectionName: any) {
-//   throw new Error("Function not implemented.");
-// }
+export default Header;
 
-// function dispatch(arg0: { payload: any; type: "Cells/isDataSavedStatus" }) {
-//   throw new Error("Function not implemented.");
-// }

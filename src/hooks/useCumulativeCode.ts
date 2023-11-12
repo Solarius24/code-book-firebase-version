@@ -1,11 +1,16 @@
-// @ts-nocheck
 import { useAppSelector } from "./useTypedSelectorAndDispatch";
 
 export const useCumulativeCode = (cellId: string) => {
   return useAppSelector((state) => {
-    const {cellsArray} = state.cells;
-    // const orderedCells = cellsArray.map((id) =>id.cellData);
-    // console.log(orderedCells)
+    const { cellsArray, orderArray } = state.cells;
+
+    const dataToDisplay = orderArray.map((id) => {
+      return cellsArray.filter((item) => item.id === id);
+    });
+    const orderDataToDisplay = [];
+    for (let i = 0; i < dataToDisplay.length; i++) {
+      orderDataToDisplay.push(dataToDisplay[i][0]);
+    }
 
     const showFunc = `
     import _React from 'react';
@@ -24,10 +29,10 @@ export const useCumulativeCode = (cellId: string) => {
       }
     };
   `;
-    const showFuncNoop = 'var show = () => {}';
+    const showFuncNoop = "var show = () => {}";
     const cumulativeCode = [];
-    for (let c of cellsArray) {
-      if (c.type === 'code') {
+    for (let c of orderDataToDisplay) {
+      if (c.type === "code") {
         if (c.id === cellId) {
           cumulativeCode.push(showFunc);
         } else {
@@ -40,6 +45,5 @@ export const useCumulativeCode = (cellId: string) => {
       }
     }
     return cumulativeCode;
-  }).join('\n');
-
+  }).join("\n");
 };

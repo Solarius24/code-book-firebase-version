@@ -3,6 +3,7 @@ import { useState } from "react";
 import { auth } from "../firebase/config";
 
 export const useLogin = () => {
+  console.log("uselogin")
   const [error, setError] = useState(null);
 
   const login = async (email, password) => {

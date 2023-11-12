@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useDispatch } from "react-redux";
 import "./ActionBar.css";
 import React from "react";
@@ -12,7 +11,7 @@ interface ActionBarProps {
 
 const ActionBar = ({ id }: ActionBarProps) => {
   const dispatch = useDispatch();
-  const handleDeleteCell = (id) => {
+  const handleDeleteCell = (id: string) => {
     dispatch(deleteCellFromSessionStorage(id));
   };
 

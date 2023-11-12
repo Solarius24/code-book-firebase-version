@@ -14,6 +14,19 @@ const CodeEditor = ({ onChange, initialValue }: CodeEditorProps) => {
   const onFormatClick = () => {
     // get current value from editor
     const unformatted = editorRef.current.getValue();
+
+       // format that value
+    const formatted = prettier
+      .format(unformatted, {
+        parser: 'babel',
+        plugins: [parser],
+        useTabs: false,
+        semi: true,
+        singleQuote: true,
+      })
+      .replace(/\n$/, '');
+
+    editorRef.current.setValue(formatted); 
   };
 
 

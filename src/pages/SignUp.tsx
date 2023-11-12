@@ -32,7 +32,6 @@ export default function SignUp() {
         className="field is-grouped is-grouped-centered columns"
         style={{ marginTop: "3rem" }}
       >
-        {/* change div to alert */}
         {error && <div>{error}</div>}
 
 

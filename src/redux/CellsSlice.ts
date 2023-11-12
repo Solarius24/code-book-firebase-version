@@ -3,8 +3,7 @@ import { PayloadAction, createSlice, nanoid } from "@reduxjs/toolkit";
 import db from "../firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { collectionCellData} from "../firebase/config";
-
+import { collectionCellData } from "../firebase/config";
 
 interface CellsState {
   cellsArray: {
@@ -17,21 +16,34 @@ interface CellsState {
 }
 
 const initialState: CellsState = {
-  cellsArray: [],
+  cellsArray: [
+    {
+      content:
+        'import { useState } from "react";\r\nconst Counter = () => {\r\n    const [count, setCount] = useState(0)\r\n    return (\r\n        <div>\r\n            <button onClick={()=> setCount(count +1)}>Click</button>\r\n            <h3>Count: {count}</h3>\r\n        </div>\r\n    )\r\n}\r\nshow(<Counter/>)',
+      type: "code",
+      id: "ztest01",
+    },
+    {
+      content:
+        "const App = () => {\r\n    return (\r\n        <div>\r\n            <h3>App Says Hi</h3>\r\n            <i>Counter componenet will be rendered below...</i>\r\n            <hr></hr>\r\n            <Counter/>\r\n        </div>\r\n    )\r\n}\r\n\r\nshow(<App/>)",
+      type: "code",
+      id: "ztest02",
+    },
+  ],
   isDataSaved: true,
-  orderArray: [],
+  orderArray: ["ztest01", "ztest02"],
 };
 
 // fetch cell
 export const fetchCellsFromFirestore = createAsyncThunk(
   "cells/fetchCellsFromFirestore",
-  async (userId:string) => {
-    console.log("data from firestore")
+  async (userId: string) => {
+    console.log("data from firestore");
     // const docRef = doc(db,collectionCellData,userId)
-    const docRef = doc(db,"codeBook", "Wc5IToceGTgsWV5mmnj3J1wo2Fm1")
+    const docRef = doc(db, "codeBook", "Wc5IToceGTgsWV5mmnj3J1wo2Fm1");
     const docSnap = await getDoc(docRef);
     const cells = docSnap.data();
-    console.log(cells)
+    console.log(cells);
     return cells;
   }
 );
@@ -43,7 +55,6 @@ const cellsSlice = createSlice({
     fetchCellsFromSessionStorage: (state) => {
       let codeBookData = sessionStorage.getItem("codeBookData");
       if (codeBookData) {
-        console.log("fetch data fro session store")
         const dataFromSesionStorage = JSON.parse(codeBookData);
         const { cellsArray, orderArray } = dataFromSesionStorage;
         state.cellsArray = cellsArray;
@@ -93,6 +104,7 @@ const cellsSlice = createSlice({
       state.orderArray = state.orderArray.filter(
         (cell) => cell !== action.payload
       );
+      state.isDataSaved = false;
 
       sessionStorage.setItem("codeBookData", JSON.stringify(state));
     },
@@ -111,25 +123,8 @@ const cellsSlice = createSlice({
       }
       state.orderArray[index] = state.orderArray[targetIndex];
       state.orderArray[targetIndex] = action.payload.id;
+      return state
     },
-    // insertCellAfter: (state, action) => {
-    //   console.log("inser cell");
-    //   const cell: Cell = {
-    //     content: "",
-    //     type: action.payload.type,
-    //     id: randomId(),
-    //   };
-
-    //   state.data[cell.id] = cell;
-    //   const foundIndex = state.orderArray.findIndex(
-    //     (id) => id === action.payload.id
-    //   );
-    //   if (foundIndex < 0) {
-    //     state.orderArray.order.unshift(cell.id);
-    //   } else {
-    //     state.orderArray.order.splice(foundIndex + 1, 0, cell.id);
-    //   }
-    // },
   },
 
   extraReducers: (builder) => {
