@@ -19,7 +19,6 @@ const CodeCell = ({ cell }: { cell: Cell }) => {
   const cumulativeCode = useCumulativeCode(cell.id);
 
   useEffect(() => {
-    console.log("bundle useEffect");
     if (!bundle) {
       dispatch(createBundle({ cellId: cell.id, cumulativeCode }));
       return;

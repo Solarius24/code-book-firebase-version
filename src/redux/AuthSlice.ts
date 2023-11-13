@@ -20,11 +20,9 @@ const initialState:AuthState = {
 export const fetchDisplayNameFromFirestore = createAsyncThunk(
   "user/fetchDisplayNameFromFirestore",
   async (userId: string) => {
-    console.log("fetch user name")
     const docRef = doc(db, collectionDisplayName, userId);
     const docSnap = await getDoc(docRef);
     const displayName = docSnap.data();
-    console.log(displayName)
     return displayName;
   }
 );

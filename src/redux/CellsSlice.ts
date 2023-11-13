@@ -38,12 +38,10 @@ const initialState: CellsState = {
 export const fetchCellsFromFirestore = createAsyncThunk(
   "cells/fetchCellsFromFirestore",
   async (userId: string) => {
-    console.log("data from firestore");
     // const docRef = doc(db,collectionCellData,userId)
     const docRef = doc(db, "codeBook", "Wc5IToceGTgsWV5mmnj3J1wo2Fm1");
     const docSnap = await getDoc(docRef);
     const cells = docSnap.data();
-    console.log(cells);
     return cells;
   }
 );
