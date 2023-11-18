@@ -120,6 +120,9 @@ const Header = () => {
         <li>
           <h5>Add changes to the code to refresh the preview window</h5>
         </li>
+        <li>
+          <h5>Press   <strong className="header-show-function"> FORMAT </strong> button to format your code with Prettier</h5>
+        </li>
       </ul>
       <h4 className="header-subtitle">
         If you will sign in and create your account, all of your changes will be

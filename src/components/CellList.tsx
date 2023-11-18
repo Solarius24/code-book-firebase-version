@@ -1,3 +1,4 @@
+// @ts-nocheck
 import "./CellList.css";
 import { Fragment, useEffect } from "react";
 import CellListItem from "./CellListItem";
@@ -42,6 +43,7 @@ const CellList = () => {
 
   return (
     <div className="cell-list">
+      
       <AddCell forceVisible={data.length === 0} previousCellId={null} />
       {renderedCells}
     </div>

@@ -1,7 +1,9 @@
-// @ts-nocheck
 import "./CodeEditor.css";
 import "./syntax.css";
 import { useRef } from "react";
+import prettierPluginBabel from "prettier/plugins/babel";
+import prettierPluginEstree from "prettier/plugins/estree";
+import * as prettier from "prettier/standalone";
 import { Editor } from "@monaco-editor/react";
 
 interface CodeEditorProps {
@@ -11,24 +13,22 @@ interface CodeEditorProps {
 
 const CodeEditor = ({ onChange, initialValue }: CodeEditorProps) => {
   const editorRef = useRef(null);
-  const onFormatClick = () => {
-    // get current value from editor
+
+  function handleEditorDidMount(editor: null) {
+    editorRef.current = editor;
+  }
+
+  const onFormatClick = async () => {
+    // @ts-ignore
     const unformatted = editorRef.current.getValue();
-
-       // format that value
-    const formatted = prettier
-      .format(unformatted, {
-        parser: 'babel',
-        plugins: [parser],
-        useTabs: false,
-        semi: true,
-        singleQuote: true,
-      })
-      .replace(/\n$/, '');
-
-    editorRef.current.setValue(formatted); 
+    const formatted = await prettier.format(unformatted, {
+      parser: "babel",
+      plugins: [prettierPluginBabel, prettierPluginEstree],
+      useTabs: true,
+    });
+    // @ts-ignore
+    editorRef.current.setValue(formatted);
   };
-
 
   return (
     <div className="editor-wrapper">
@@ -43,7 +43,10 @@ const CodeEditor = ({ onChange, initialValue }: CodeEditorProps) => {
         theme="vs-dark"
         defaultLanguage="javascript"
         defaultValue={initialValue}
+        // @ts-ignore
         onChange={onChange}
+                // @ts-ignore
+        onMount={handleEditorDidMount}
       ></Editor>
     </div>
   );

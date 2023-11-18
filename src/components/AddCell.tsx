@@ -1,11 +1,10 @@
-// @ts-nocheck
 import "./AddCell.css";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { addCellToSessionStorage } from "../redux/CellsSlice";
 
 interface AddCellProps {
-  previousCellId: string | null;
+  previousCellId: string;
   forceVisible?: boolean;
 }
 
